@@ -19,7 +19,7 @@ base = len(good_characters)
 
 def lazy_result(return_type, dummy_initial=None):
     """Decorator to allow for on-demand evaluation (limited scope of use!)"""
-    if not issubclass(return_type, basestring):
+    if not issubclass(return_type, str):
         raise NotImplementedError
 
     class _lazy_class(return_type):
@@ -54,7 +54,7 @@ def make_identifier(number):
     """
     Encodes a number as an identifier.
     """
-    if not isinstance(number, (int, long)):
+    if not isinstance(number, int):
         raise ValueError(
             "You can only make identifiers out of integers (not %r)"
             % number)
@@ -90,10 +90,10 @@ def hash_identifier(s, length, pad=True, hasher=md5, prefix='',
         # Accept sha/md5 modules as well as callables
         hasher = hasher.new
     if length > 26 and hasher is md5:
-        raise ValueError, (
+        raise ValueError(
             "md5 cannot create hashes longer than 26 characters in "
             "length (you gave %s)" % length)
-    if isinstance(s, unicode):
+    if isinstance(s, str):
         s = s.encode('utf-8')
     h = hasher(str(s))
     bin_hash = h.digest()

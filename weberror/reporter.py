@@ -12,7 +12,7 @@ from email.utils import formatdate
 class Reporter(object):
 
     def __init__(self, **conf):
-        for name, value in conf.items():
+        for name, value in list(conf.items()):
             if not hasattr(self, name):
                 raise TypeError(
                     "The keyword argument %s was not expected"
@@ -65,7 +65,7 @@ class EmailReporter(Reporter):
             raise ValueError("You must set to_addresses")
         if not self.from_address:
             raise ValueError("You must set from_address")
-        if isinstance(self.to_addresses, (str, unicode)):
+        if isinstance(self.to_addresses, str):
             self.to_addresses = [self.to_addresses]
 
     def assemble_email(self, exc_data):
@@ -142,8 +142,8 @@ class WSGIAppReporter(Reporter):
 def as_str(v):
     if isinstance(v, str):
         return v
-    if not isinstance(v, unicode):
-        v = unicode(v)
-    if isinstance(v, unicode):
+    if not isinstance(v, str):
+        v = str(v)
+    if isinstance(v, str):
         v = v.encode('utf8')
     return v
